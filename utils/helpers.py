@@ -1,8 +1,10 @@
 import os
-from utils.fonts import get_system_font_fallback
+from utils.fonts import get_system_font_fallback, download_direct_font
 from PIL import Image, ImageDraw, ImageFont
-from utils.fonts import download_direct_font
-from contants import FONT_CACHE, PRINTER_WIDTH
+import contants
+
+PRINTER_WIDTH = contants.PRINTER_WIDTH
+FONT_CACHE = contants.FONT_CACHE
 
 def render_text_image(text, font_path, font_size=24, align="center", max_width_pixels=PRINTER_WIDTH):
     """Render text as printer-compatible raster image"""
