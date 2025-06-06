@@ -11,16 +11,16 @@ To start using the sample ESCPOS printer with Lao language support, follow these
    Navigate to the cloned directory and create a virtual environment:
    ```bash
    cd escpos-lao-text
-   python -m venv venv
+   python -m venv .venv
    ```
 3. **Activate the Virtual Environment**:
    - On Windows:
      ```bash
-     venv\Scripts\activate
+     .venv\Scripts\activate
      ```
    - On macOS/Linux:
      ```bash
-     source venv/bin/activate
+     source .venv/bin/activate
      ```
 4. **Install Dependencies**:
    Install the required dependencies using pip:
@@ -36,3 +36,13 @@ To start using the sample ESCPOS printer with Lao language support, follow these
    Ensure that your ESCPOS printer is connected and configured correctly. The sample code will attempt to print a test message in Lao language.
 7. **Modify Sample Code**:
    You can modify the `sample.py` file to customize the text or add more features as needed.
+8. **Troubleshooting**:
+   If you encounter any issues, check the following:
+   - Ensure that the printer is powered on and connected to your computer.
+   - Verify that the correct port is specified in the sample code.
+   - Check for any error messages in the console output.
+9. **Further Customization**:
+   You can explore the `escpos` library documentation for more advanced features and customization options:
+   - [Python-ESCPOS Documentation](https://python-escpos.readthedocs.io/en/latest/)
+10. **License**:
+    This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
