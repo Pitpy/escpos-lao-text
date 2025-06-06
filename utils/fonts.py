@@ -1,7 +1,6 @@
 import os
 import requests
 from contants import FONT_CACHE
-from utils.helpers import render_text_image
 
 def download_font(font_url, font_name):
     """Download and cache Google Font - extracts TTF URL from CSS"""
@@ -98,8 +97,8 @@ def download_direct_font(font_name="NotoSansLao"):
 
 def print_with_google_font(printer, text, font_name="Roboto", font_style="", font_size=24, align="center"):
     """Print text using fonts with comprehensive fallback system"""
+    from utils.helpers import render_text_image
     font_path = None
-    
     try:
         # Step 1: Try direct download for specific fonts first
         if "noto" in font_name.lower() and "lao" in font_name.lower():
