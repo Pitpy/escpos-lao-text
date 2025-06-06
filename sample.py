@@ -46,7 +46,7 @@ def print_receipt():
             line_total = qty * price
             
             # Render entire line as image for consistent formatting
-            item_image = render_item_line(name, qty, price, line_total, font_size=20)
+            item_image = render_item_line(name, qty, price, line_total, font_size=22)
             printer.image(item_image, impl="bitImageRaster", high_density_vertical=True, high_density_horizontal=True)
         
         # Calculate total
