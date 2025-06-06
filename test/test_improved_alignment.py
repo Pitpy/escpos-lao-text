@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test improved table alignment with proper column positioning"""
 
-from escpos_sample_font import (
+from sample import (
     render_table_header, render_item_line, render_total_line, 
     render_receipt_line, PRINTER_WIDTH
 )

@@ -7,7 +7,7 @@ This demonstrates the successful completion of the thermal printer
 alignment project with perfect column positioning for mixed Lao/English text.
 """
 
-from escpos_sample_font import (
+from sample import (
     render_table_header, render_item_line, render_total_line, 
     render_receipt_line, PRINTER_WIDTH
 )

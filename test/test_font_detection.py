@@ -5,7 +5,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from escpos_sample_font import contains_lao_text, download_direct_font
+from sample import contains_lao_text, download_direct_font
 
 def test_font_detection():
     """Test the font detection function"""

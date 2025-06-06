@@ -81,7 +81,7 @@ print(__doc__)
 
 # Quick validation
 try:
-    from escpos_sample_font import render_item_line, print_image_text, contains_lao_text
+    from sample import render_item_line, print_image_text, contains_lao_text
     
     print("\n🔍 SYSTEM VALIDATION:")
     print("=" * 30)

@@ -2,7 +2,7 @@
 """Test unified image rendering vs mixed text/image rendering"""
 
 from escpos.printer import Usb
-from escpos_sample_font import (
+from sample import (
     render_item_line, print_image_text, render_receipt_line, 
     contains_lao_text, download_direct_font
 )

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Visual demonstration of the alignment improvement"""
 
-from escpos_sample_font import render_item_line, contains_lao_text, download_direct_font
+from sample import render_item_line, contains_lao_text, download_direct_font
 from PIL import Image, ImageDraw, ImageFont
 import os
 

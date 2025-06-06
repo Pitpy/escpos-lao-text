@@ -2,7 +2,7 @@
 """Test comprehensive Lao font integration with multiple Lao items"""
 
 from escpos.printer import Usb
-from escpos_sample_font import print_text_with_font_detection, contains_lao_text
+from sample import print_text_with_font_detection, contains_lao_text
 import textwrap
 
 def print_multilingual_receipt():

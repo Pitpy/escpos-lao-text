@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Final comprehensive alignment test for thermal printer"""
 
-from escpos_sample_font import (
+from sample import (
     render_table_header, render_item_line, render_total_line, 
     render_receipt_line, print_image_text, PRINTER_WIDTH
 )
