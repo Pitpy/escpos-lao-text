@@ -15,7 +15,7 @@ def print_receipt():
         printer = Usb(0x1fc9, 0x2016, in_ep=0x82, out_ep=0x01)
         
         # Print header with image rendering
-        print_image_text(printer, "SUPERMARKET XYZ", font_size=36, align="center")
+        print_image_text(printer, "P2G Shop", font_size=36, align="center")
         print_image_text(printer, "Tel: (555) 123-4567", font_size=18, align="center")
         print_image_text(printer, "2025-03-15 14:30", font_size=18, align="center")
         
@@ -35,10 +35,10 @@ def print_receipt():
         # Example items
         items = [
             ("ເບຍລາວ", 1, 4.99),
-            ("Whole Milk", 2, 3.49),
-            ("Eggs (12ct)", 1, 5.99),
-            ("Coffee Beans", 1, 12.99),
-            ("Bananas", 0.54, 0.79),
+            ("ນົມສົດ", 2, 3.49),
+            ("ໄຂ່ໄກ່ (12 ໜ່ວຍ)", 1, 5.99),
+            ("ກາເຟ", 1, 12.99),
+            ("ກ້ວຍ", 0.54, 0.79),
         ]
         
         # Print each item using unified image rendering for perfect alignment
