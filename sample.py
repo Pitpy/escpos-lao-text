@@ -32,13 +32,18 @@ def print_receipt():
         separator_image = render_receipt_line("-" * 80, font_size=26)
         printer.image(separator_image, impl="bitImageRaster")
         
-        # Example items
+        # Example items with properly positioned Lao text
         items = [
-            ("ເບຍລາວ", 1, 4.99),
-            ("ນົມສົດ", 2, 3.49),
-            ("ໄຂ່ໄກ່ (12 ໜ່ວຍ)", 1, 5.99),
-            ("ກາເຟ", 1, 12.99),
-            ("ກ້ວຍ", 0.54, 0.79),
+            ("ແກງຈືດໝູຕົ້ມ", 0, 0.00),
+            ("ເບຍລາວ", 1, 4.99),        # Beer Lao
+            ("ນົມສົດ", 2, 3.49),         # Fresh milk (ນ + ົ + ມ + ສ + ົ + ດ)
+            ("ໄຂ່ໄກ່ (12 ໜ່ວຍ)", 1, 5.99),  # Chicken eggs (ໄ + ຂ + ່ + ໄ + ກ + ່)
+            ("ກາເຟ", 1, 12.99),         # Coffee
+            ("ກ້ວຍ", 0.54, 0.79),        # Banana (ກ + ້ + ວ + ຍ)
+            ("ຂອງກິນ", 3, 2.50),        # Snacks (ຂ + ອ + ງ + ກ + ິ + ນ)
+            ("ຂອງດື່ມ", 2, 1.75),        # Drinks (ຂ + ອ + ງ + ດ + ື + ມ)
+            ("ຂອງໃສ່ລາວແລະນົມສົດແລະເບຍແລະນ້ຳ", 1, 0.99), # Fresh Lao accessories, milk, beer and water (ຂ + ອ + ງ + ໃ + ສ + ິ + ຈ + ລ + ຳ + ແ + ລ + ະ + ນ + ສ + ໍ + ດ + ແ + ລ + ະ + ແ + ລ)
+            ("ກູກິ້ວ", 1, 3.00),         # Noodles (ກ + ູ + ກ + ິ + ວ)
         ]
         
         # Print each item using unified image rendering for perfect alignment

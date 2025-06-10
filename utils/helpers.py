@@ -1,4 +1,5 @@
 import os
+import unicodedata
 from utils.fonts import get_system_font_fallback, download_direct_font
 from PIL import Image, ImageDraw, ImageFont
 import contants
@@ -7,7 +8,7 @@ PRINTER_WIDTH = contants.PRINTER_WIDTH
 FONT_CACHE = contants.FONT_CACHE
 
 def render_text_image(text, font_path, font_size=24, align="center", max_width_pixels=PRINTER_WIDTH):
-    """Render text as printer-compatible raster image"""
+    """Render text as printer-compatible raster image with improved Lao character positioning"""
     # Load font
     try:
         if font_path and os.path.exists(font_path):
@@ -36,6 +37,10 @@ def render_text_image(text, font_path, font_size=24, align="center", max_width_p
             font = ImageFont.load_default()
             print("Using PIL default font as fallback")
 
+    # Normalize text if it contains Lao characters
+    if contains_lao_text(text):
+        text = unicodedata.normalize('NFC', text)
+
     # Create drawing context
     dummy_img = Image.new("L", (1, 1), 255)
     dummy_draw = ImageDraw.Draw(dummy_img)
@@ -58,11 +63,82 @@ def render_text_image(text, font_path, font_size=24, align="center", max_width_p
     elif align == "right":
         x = img_width - text_width
     
-    # Draw text (black on white)
-    draw.text((x, 0), text, font=font, fill=0)
+    # Draw text with improved positioning for Lao text
+    if contains_lao_text(text):
+        draw_lao_text_positioned_helper(draw, (x, 0), text, font)
+    else:
+        draw.text((x, 0), text, font=font, fill=0)
     
     # Convert to printer-compatible format
     return img
+
+def draw_lao_text_positioned_helper(draw, position, text, font):
+    """Helper function for positioning Lao text with combining characters and vertical stacking"""
+    x, y = position
+    
+    # Track positions: current_x for next character, last_base_x for combining characters
+    current_x = x
+    last_base_x = x  # Position of the last base character
+    last_base_y = y  # Y position for combining characters
+    vowel_positioned = False  # Track if a vowel mark was positioned on current base
+    
+    i = 0
+    while i < len(text):
+        char = text[i]
+        
+        # Check if this character is a combining/nonspacing mark
+        # For Lao, check category 'Mn' (Mark, nonspacing) instead of combining class
+        category = unicodedata.category(char)
+        is_combining = category == 'Mn'  # Mark, nonspacing
+        
+        if is_combining:
+            # Combining character - position it over the last base character with proper stacking
+            
+            # Different positioning for different types of combining characters
+            name = unicodedata.name(char, "")
+            combining_class = unicodedata.combining(char)
+            
+            if "TONE" in name or combining_class == 122:
+                # Tone marks (່ ້ ໊ ໋) - position above vowel marks if present
+                offset_x = last_base_x + 2  # Center-aligned horizontally
+                if vowel_positioned:
+                    # If vowel mark already positioned, put tone mark above it
+                    offset_y = last_base_y - 6  # Above the vowel mark
+                else:
+                    # No vowel mark, position normally above base
+                    offset_y = last_base_y - 2  # Slightly above base
+            elif "VOWEL" in name and combining_class == 0:
+                # Vowel marks (ົ ັ ິ ີ) - center alignment above base
+                offset_x = last_base_x + 1  # Slightly offset for better visibility
+                offset_y = last_base_y  # Same level as base
+                vowel_positioned = True  # Mark that vowel is positioned
+            elif combining_class == 118:
+                # Below vowel marks (ຸ ູ) - center below base
+                offset_x = last_base_x + 1
+                offset_y = last_base_y + 6  # Below the base character
+            else:
+                # Default positioning
+                offset_x = last_base_x
+                offset_y = last_base_y
+            
+            draw.text((offset_x, offset_y), char, font=font, fill=0)
+            # Don't advance current_x for combining characters
+        else:
+            # Base character - render at current position and advance
+            draw.text((current_x, y), char, font=font, fill=0)
+            last_base_x = current_x  # Remember this base position for combining characters
+            last_base_y = y  # Remember Y position
+            vowel_positioned = False  # Reset vowel positioning flag for new base
+            
+            # Calculate character width for next position
+            try:
+                bbox = draw.textbbox((0, 0), char, font=font)
+                char_width = bbox[2] - bbox[0]
+                current_x += max(char_width, 4)  # Advance to next position
+            except:
+                current_x += 8  # Fallback spacing
+        
+        i += 1
 
 def contains_lao_text(text):
     """Check if text contains Lao characters"""
@@ -74,11 +150,14 @@ def contains_lao_text(text):
 
 def print_text_with_font_detection(printer, text, font_size=24, align="center", newline=True):
     """Print text using appropriate font based on content"""
-    if contains_lao_text(text):
+    # Normalize Lao text for proper character positioning
+    normalized_text = unicodedata.normalize('NFC', text) if contains_lao_text(text) else text
+    
+    if contains_lao_text(normalized_text):
         # Use Lao font for text containing Lao characters
         print_with_google_font(
             printer, 
-            text, 
+            normalized_text, 
             font_name="Noto Sans Lao", 
             font_style="", 
             font_size=font_size, 
@@ -92,9 +171,9 @@ def print_text_with_font_detection(printer, text, font_size=24, align="center", 
         
         printer.set(align=align_value, width=2 if font_size > 30 else 1, height=2 if font_size > 30 else 1)
         if newline:
-            printer.text(text + "\n")
+            printer.text(normalized_text + "\n")
         else:
-            printer.text(text)
+            printer.text(normalized_text)
         printer.set()  # Reset formatting
 
 def print_with_google_font(printer, text, font_name="Roboto", font_style="", font_size=24, align="center"):
